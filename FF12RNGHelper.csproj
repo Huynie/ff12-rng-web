@@ -1,0 +1,236 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="12.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProjectGuid>{755D342D-FB98-4BDD-836E-99615EBE9A2A}</ProjectGuid>
+    <OutputType>WinExe</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>FF12RNGHelper</RootNamespace>
+    <AssemblyName>FF12RNGHelper</AssemblyName>
+    <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+    <TargetFrameworkProfile />
+    <IsWebBootstrapper>false</IsWebBootstrapper>
+    <PublishUrl>publish\</PublishUrl>
+    <Install>true</Install>
+    <InstallFrom>Disk</InstallFrom>
+    <UpdateEnabled>false</UpdateEnabled>
+    <UpdateMode>Foreground</UpdateMode>
+    <UpdateInterval>7</UpdateInterval>
+    <UpdateIntervalUnits>Days</UpdateIntervalUnits>
+    <UpdatePeriodically>false</UpdatePeriodically>
+    <UpdateRequired>false</UpdateRequired>
+    <MapFileExtensions>true</MapFileExtensions>
+    <ApplicationRevision>2</ApplicationRevision>
+    <ApplicationVersion>1.0.0.%2a</ApplicationVersion>
+    <UseApplicationTrust>false</UseApplicationTrust>
+    <PublishWizardCompleted>true</PublishWizardCompleted>
+    <BootstrapperEnabled>true</BootstrapperEnabled>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <PlatformTarget>AnyCPU</PlatformTarget>
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <Prefer32Bit>false</Prefer32Bit>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <PlatformTarget>AnyCPU</PlatformTarget>
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <Prefer32Bit>false</Prefer32Bit>
+  </PropertyGroup>
+  <PropertyGroup>
+    <StartupObject />
+  </PropertyGroup>
+  <PropertyGroup>
+    <ApplicationIcon>Resources\4.ico</ApplicationIcon>
+  </PropertyGroup>
+  <PropertyGroup>
+    <ManifestCertificateThumbprint>DE2A857B38EB13AD6755FFB69480A73BC918ED10</ManifestCertificateThumbprint>
+  </PropertyGroup>
+  <PropertyGroup>
+    <ManifestKeyFile>FF12RNGHelper_TemporaryKey.pfx</ManifestKeyFile>
+  </PropertyGroup>
+  <PropertyGroup>
+    <GenerateManifests>true</GenerateManifests>
+  </PropertyGroup>
+  <PropertyGroup>
+    <SignManifests>true</SignManifests>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="System" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.Xml.Linq" />
+    <Reference Include="System.Data.DataSetExtensions" />
+    <Reference Include="Microsoft.CSharp" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Deployment" />
+    <Reference Include="System.Drawing" />
+    <Reference Include="System.Windows.Forms" />
+    <Reference Include="System.Xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="src\Core\Monster.cs" />
+    <Compile Include="src\Core\SpawnRngHelper.cs" />
+    <Compile Include="src\Core\SpawnFutureRng.cs" />
+    <Compile Include="src\Forms\FormSpawnLoader.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="src\Forms\FormChestLoader.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="src\Forms\FormManager.cs" />
+    <Compile Include="src\Forms\FormSpawn2.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="src\Forms\FormSpawn2.Designer.cs">
+      <DependentUpon>FormSpawn2.cs</DependentUpon>
+    </Compile>
+    <Compile Include="src\Forms\FormSteal2.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="src\Forms\FormSteal2.Designer.cs">
+      <DependentUpon>FormSteal2.cs</DependentUpon>
+    </Compile>
+    <Compile Include="src\Forms\FormStealLoader.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="src\Forms\FormUtils.cs" />
+    <Compile Include="src\Core\BaseRngHelper.cs" />
+    <Compile Include="src\Core\Character.cs" />
+    <Compile Include="src\Core\CharacterGroup.cs" />
+    <Compile Include="src\Core\ChestFutureRng.cs" />
+    <Compile Include="src\Core\ChestRngHelper.cs" />
+    <Compile Include="src\Core\CircularBuffer.cs" />
+    <Compile Include="src\Core\Combo.cs" />
+    <Compile Include="src\Forms\FormChest2.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="src\Forms\FormChest2.Designer.cs">
+      <DependentUpon>FormChest2.cs</DependentUpon>
+    </Compile>
+    <Compile Include="src\Core\IFutureRng.cs" />
+    <Compile Include="src\Core\PlatformType.cs" />
+    <Compile Include="src\Core\IRngHelper.cs" />
+    <Compile Include="src\Core\Spell.cs" />
+    <Compile Include="src\Core\Spells.cs" />
+    <Compile Include="src\Core\Steal.cs" />
+    <Compile Include="src\Core\Chest.cs" />
+    <Compile Include="src\Forms\FormSteal.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="src\Forms\FormSteal.Designer.cs">
+      <DependentUpon>FormSteal.cs</DependentUpon>
+    </Compile>
+    <Compile Include="src\Forms\FormChest.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="src\Forms\FormChest.Designer.cs">
+      <DependentUpon>FormChest.cs</DependentUpon>
+    </Compile>
+    <Compile Include="src\Forms\FormSpawn.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="src\Forms\FormSpawn.Designer.cs">
+      <DependentUpon>FormSpawn.cs</DependentUpon>
+    </Compile>
+    <Compile Include="src\Core\IDeepClonable.cs" />
+    <Compile Include="src\Core\IRNG.cs" />
+    <Compile Include="src\Forms\IFormLoader.cs" />
+    <Compile Include="src\Forms\Masterform.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="src\Forms\Masterform.Designer.cs">
+      <DependentUpon>Masterform.cs</DependentUpon>
+    </Compile>
+    <Compile Include="src\Program.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="src\Core\RNG1998.cs" />
+    <Compile Include="src\Core\RNG2002.cs" />
+    <Compile Include="src\Core\Utils.cs" />
+    <Compile Include="src\Core\StealFutureRng.cs" />
+    <Compile Include="src\Core\StealRngHelper.cs" />
+    <EmbeddedResource Include="src\Forms\FormChest2.resx">
+      <DependentUpon>FormChest2.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="src\Forms\FormSpawn2.resx">
+      <DependentUpon>FormSpawn2.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="src\Forms\FormSteal2.resx">
+      <DependentUpon>FormSteal2.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="src\Forms\FormSteal.resx">
+      <DependentUpon>FormSteal.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="src\Forms\FormChest.resx">
+      <DependentUpon>FormChest.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="src\Forms\FormSpawn.resx">
+      <DependentUpon>FormSpawn.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Properties\Resources.resx">
+      <Generator>ResXFileCodeGenerator</Generator>
+      <LastGenOutput>Resources.Designer.cs</LastGenOutput>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <Compile Include="Properties\Resources.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DependentUpon>Resources.resx</DependentUpon>
+      <DesignTime>True</DesignTime>
+    </Compile>
+    <EmbeddedResource Include="src\Forms\Masterform.resx">
+      <DependentUpon>Masterform.cs</DependentUpon>
+    </EmbeddedResource>
+    <None Include="FF12RNGHelper_TemporaryKey.pfx" />
+    <None Include="Properties\Settings.settings">
+      <Generator>SettingsSingleFileGenerator</Generator>
+      <LastGenOutput>Settings.Designer.cs</LastGenOutput>
+    </None>
+    <Compile Include="Properties\Settings.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DependentUpon>Settings.settings</DependentUpon>
+      <DesignTimeSharedInput>True</DesignTimeSharedInput>
+    </Compile>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="App.config" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\Icon1.ico" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\4.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\4.ico" />
+  </ItemGroup>
+  <ItemGroup>
+    <BootstrapperPackage Include="Microsoft.Net.Framework.3.5.SP1">
+      <Visible>False</Visible>
+      <ProductName>.NET Framework 3.5 SP1</ProductName>
+      <Install>false</Install>
+    </BootstrapperPackage>
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Resources\Image1.png" />
+  </ItemGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+</Project>
