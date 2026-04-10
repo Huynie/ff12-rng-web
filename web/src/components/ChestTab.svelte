@@ -235,8 +235,8 @@
       </div>
     </div>
 
-    <!-- Heal controls: mobile order 3, desktop col 1 row 2 -->
-    <div class="card bg-base-200 p-4 order-3">
+    <!-- Heal controls: desktop col 1 row 2 (hidden on mobile) -->
+    <div class="hidden md:block card bg-base-200 p-4 order-3">
       <HealInput
         bind:healValue
         bind:numRows
@@ -285,6 +285,26 @@
       </div>
     {:else}
       <p class="text-xs text-base-content/40">Run Begin to see directions.</p>
+    {/if}
+  </div>
+
+  <!-- Heal controls: mobile only (below advance directions) -->
+  <div class="md:hidden card bg-base-200 p-4">
+    <HealInput
+      bind:healValue
+      bind:numRows
+      bind:consumeCount
+      {loading}
+      {canContinue}
+      {comboInfo}
+      on:begin={onBegin}
+      on:continue={onContinue}
+      on:consume={onConsume}
+      on:clear={onClear}
+      on:recalculate={onRecalculate}
+    />
+    {#if errorMsg}
+      <div class="alert alert-error text-sm mt-3">{errorMsg}</div>
     {/if}
   </div>
 

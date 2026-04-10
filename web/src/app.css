@@ -52,6 +52,13 @@ input::placeholder {
   opacity: 0.3;
 }
 
+/* Prevent iOS Safari auto-zoom on input focus */
+input[type="number"],
+input[type="text"],
+select {
+  font-size: 16px !important;
+}
+
 .input:focus,
 .input:focus-within,
 .select:focus,

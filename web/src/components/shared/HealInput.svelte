@@ -77,7 +77,7 @@
         <div class="flex items-center gap-1 lg:gap-2">
           <input
             type="number"
-            class="input input-bordered input-sm w-12 lg:w-16"
+            class="input input-bordered input-sm w-12 lg:w-18"
             bind:value={healValue}
             on:keydown={onContinueKeydown}
             disabled={loading}
