@@ -77,7 +77,7 @@
         <div class="flex items-center gap-1 lg:gap-2">
           <input
             type="number"
-            class="input input-bordered input-sm w-16 lg:w-18"
+            class="input input-bordered input-sm w-14 lg:w-18"
             bind:value={healValue}
             on:keydown={onContinueKeydown}
             disabled={loading}
@@ -101,7 +101,7 @@
         <input
           type="number"
           min="1"
-          class="input input-bordered input-sm w-16 lg:w-16"
+          class="input input-bordered input-sm w-14 lg:w-16"
           bind:value={consumeCount}
           disabled={loading}
         />
@@ -114,7 +114,7 @@
 
       <!-- Reset -->
       <button
-        class="btn btn-outline btn-sm ml-auto"
+        class="btn btn-outline btn-sm lg:ml-auto"
         on:click={() => dispatch('clear')}
         disabled={loading}
       >Reset</button>

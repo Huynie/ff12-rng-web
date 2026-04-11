@@ -466,14 +466,14 @@
                             class="badge badge-md border-blue-400 bg-blue-100 text-blue-700 dark:border-blue-500 dark:bg-blue-900/30 dark:text-blue-300"
                             >{#if d.advanceToAppear >= 0}<strong
                                     >{d.advanceToAppear}</strong
-                                > until spawn{:else}Out of range{/if}</span
+                                > to spawn{:else}Out of range{/if}</span
                         >
                     {:else}
                         <span
                             class="badge badge-md border-cyan-400 bg-cyan-100 text-cyan-700 dark:border-cyan-500 dark:bg-cyan-900/30 dark:text-cyan-300"
                             >{#if d.advanceToAppear >= 0}<strong
                                     >{d.advanceToAppear}</strong
-                                > until spawn{:else}Out of range{/if}</span
+                                > to spawn{:else}Out of range{/if}</span
                         >
                     {/if}
                 {/each}
@@ -484,14 +484,14 @@
                             class="badge badge-md border-indigo-500 bg-indigo-200 text-indigo-800 dark:border-indigo-400 dark:bg-indigo-900/40 dark:text-indigo-200"
                             >{#if d.advanceForItem >= 0}<strong
                                     >{d.advanceForItem}</strong
-                                > until item inside{:else}Out of range{/if}</span
+                                > to item{:else}Out of range{/if}</span
                         >
                     {:else}
                         <span
                             class="badge badge-md border-sky-500 bg-sky-200 text-sky-800 dark:border-sky-400 dark:bg-sky-900/40 dark:text-sky-200"
                             >{#if d.advanceForItem >= 0}<strong
                                     >{d.advanceForItem}</strong
-                                > until item inside{:else}Out of range{/if}</span
+                                > to item{:else}Out of range{/if}</span
                         >
                     {/if}
                 {/each}
