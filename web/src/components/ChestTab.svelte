@@ -553,7 +553,7 @@
                     {#each rows as row}
                         <tr
                             class={row.isPastRng
-                                ? "bg-emerald-100  text-emerald-600"
+                                ? "bg-emerald-100  text-emerald-600 dark:bg-emerald-950 dark:text-emerald-600"
                                 : ""}
                             class:row-selected={!row.isPastRng &&
                                 selectedRows.has(row.index)}
