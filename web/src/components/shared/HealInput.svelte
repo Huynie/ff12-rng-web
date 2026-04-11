@@ -70,14 +70,14 @@
   <!-- Phase 2: Heal + Attack + Reset -->
   <div class="flex flex-col gap-2">
     <!-- All controls in one row -->
-    <div class="flex flex-wrap items-end gap-3 lg:gap-6">
+    <div class="flex flex-wrap items-end gap-1 lg:gap-6">
       <!-- Heal group -->
       <div class="flex flex-col gap-1">
         <p class="text-xs font-semibold text-base-content/60 uppercase tracking-wide">Next heal</p>
         <div class="flex items-center gap-1 lg:gap-2">
           <input
             type="number"
-            class="input input-bordered input-sm w-12 lg:w-18"
+            class="input input-bordered input-sm w-16 lg:w-18"
             bind:value={healValue}
             on:keydown={onContinueKeydown}
             disabled={loading}
@@ -101,7 +101,7 @@
         <input
           type="number"
           min="1"
-          class="input input-bordered input-sm w-12 lg:w-16"
+          class="input input-bordered input-sm w-16 lg:w-16"
           bind:value={consumeCount}
           disabled={loading}
         />

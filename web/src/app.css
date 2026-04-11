@@ -4,8 +4,8 @@
 @plugin "daisyui/theme" {
   name: "light";
   default: true;
-  --color-primary: oklch(55% 0.2 250);
-  --color-secondary: oklch(55% 0.2 300);
+  --color-primary: oklch(65% 0.23 180);
+  --color-secondary: oklch(65% 0.23 30);
   --color-success: oklch(85% 0.10 160);
   --color-base-100: oklch(100% 0 0);
 }
@@ -13,8 +13,8 @@
 @plugin "daisyui/theme" {
   name: "dark";
   prefersdark: true;
-  --color-primary: oklch(65% 0.2 250);
-  --color-secondary: oklch(65% 0.2 300);
+  --color-primary: oklch(65% 0.23 180);
+  --color-secondary: oklch(65% 0.23 30);
   --color-success: oklch(55% 0.15 145);
   --color-base-100: oklch(20% 0 0);
 }
