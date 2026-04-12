@@ -341,13 +341,13 @@
     // Highlight all rows from the first future row up to each chest's rng position (inclusive)
     $: rngPosRowIndices = (() => {
         const firstFutureIdx = rows.findIndex((r) => !r.isPastRng);
-        if (firstFutureIdx === -1) return new Map<number, number>();
-        const map = new Map<number, number>(); // rowIdx → chestIndex (first chest wins on overlap)
-        chests.slice().reverse().forEach((chest, rci) => {
-            const ci = chests.length - 1 - rci;
+        if (firstFutureIdx === -1) return new Map<number, number[]>();
+        const map = new Map<number, number[]>(); // rowIdx → chestIndices
+        chests.forEach((chest, ci) => {
             if (chest.rngPosition > 0) {
                 for (let i = 0; i < chest.rngPosition; i++) {
-                    map.set(firstFutureIdx + i, ci);
+                    const idx = firstFutureIdx + i;
+                    map.set(idx, [...(map.get(idx) ?? []), ci]);
                 }
             }
         });
@@ -518,20 +518,16 @@
                   {#each rows as row, rowIdx}
                     {@const chestHighlight = rngPosRowIndices.get(rowIdx)}
                     <tr
-                      class={row.isPastRng
-                        ? "bg-emerald-100 text-emerald-600 dark:bg-emerald-950 dark:text-emerald-600"
-                        : chestHighlight === 0 ? "bg-fuchsia-100 dark:bg-fuchsia-900/20"
-                        : chestHighlight === 1 ? "bg-fuchsia-100 dark:bg-fuchsia-900/20"
-                        : ""}
-                      class:row-selected={!row.isPastRng && selectedRows.has(row.index)}
-                      class:cursor-pointer={!row.isPastRng}
+                      class="{row.isPastRng ? 'bg-emerald-100 text-emerald-600 dark:bg-emerald-950 dark:text-emerald-600' : ''} {!row.isPastRng && selectedRows.has(row.index) ? 'row-selected' : ''} {!row.isPastRng ? 'cursor-pointer' : ''}"
                       on:click={() => { if (!row.isPastRng) toggleRow(row.index); }}
                     >
-                      <td>{row.index}</td>
+                      <td class="{!row.isPastRng && chestHighlight?.includes(0) ? 'border-l-4 border-blue-400 dark:border-blue-500' : ''}">{row.index}</td>
                       <td>{row.currentHeal}</td>
                       <td>{row.randToPercent}</td>
                       {#each row.chestRewards as reward, i}
-                        <td class={chestCellClass(i, reward, row.isPastRng)}>
+                        <td
+                          class="{chestCellClass(i, reward, row.isPastRng)} {!row.isPastRng && chestHighlight?.includes(1) && i === row.chestRewards.length - 1 ? 'border-r-4 border-cyan-400 dark:border-cyan-500' : ''}"
+                        >
                           {reward.reward === "Gil" ? `${reward.gilAmount} gil` : reward.reward}
                         </td>
                       {/each}
