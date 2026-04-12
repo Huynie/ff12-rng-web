@@ -74,6 +74,18 @@
     }> = [];
     let selectedRows = new Set<number>();
 
+    type HistoryEntry = {
+        action: 'heal' | 'attack';
+        label: string;
+        rngIndex: number;
+        heal: number;
+        chestRewards: SerializedChestInstance['chestRewards'];
+        advanceDirections: Array<{ advanceToAppear: number; advanceForItem: number }>;
+    };
+    let historyLog: HistoryEntry[] = [];
+    let activeRightTab: 'positions' | 'history' = 'positions';
+    let pendingHistoryEntry: { action: 'heal' | 'attack'; label: string } | null = null;
+
     function toggleRow(index: number) {
         selectedRows = new Set(
             selectedRows.has(index)
@@ -169,6 +181,21 @@
             comboInfo = msg.combo;
             rows = msg.futureRng.chestInstances ?? [];
             advanceDirections = msg.futureRng.advanceDirections ?? [];
+
+            if (pendingHistoryEntry) {
+                const current = rows.find(r => !r.isPastRng);
+                if (current) {
+                    historyLog = [{
+                        action: pendingHistoryEntry.action,
+                        label: pendingHistoryEntry.label,
+                        rngIndex: current.index,
+                        heal: current.currentHeal,
+                        chestRewards: current.chestRewards,
+                        advanceDirections: [...advanceDirections],
+                    }, ...historyLog].slice(0, 20);
+                }
+                pendingHistoryEntry = null;
+            }
         }
     }
 
@@ -198,7 +225,9 @@
     function onBegin() {
         if (!healValue) return;
         healHistory = [];
+        historyLog = [];
         pushHealHistory(Number(healValue));
+        pendingHistoryEntry = { action: 'heal', label: `Heal ${healValue}` };
         errorMsg = "";
         loading = true;
         canContinue = false;
@@ -221,6 +250,7 @@
     function onContinue() {
         if (!healValue) return;
         pushHealHistory(Number(healValue));
+        pendingHistoryEntry = { action: 'heal', label: `Heal ${healValue}` };
         errorMsg = "";
         loading = true;
         worker.postMessage({
@@ -231,6 +261,7 @@
     }
 
     function onConsume(e: CustomEvent<number>) {
+        pendingHistoryEntry = { action: 'attack', label: `Attack ×${e.detail}` };
         errorMsg = "";
         loading = true;
         worker.postMessage({ type: "CONSUME", count: e.detail, numRows });
@@ -239,6 +270,8 @@
     function onClear() {
         rows = [];
         advanceDirections = [];
+        historyLog = [];
+        activeRightTab = 'positions';
         errorMsg = "";
         canContinue = false;
         nextExpectedHeal = null;
@@ -431,51 +464,91 @@
 
       </div>
 
-      <!-- Right column: table (stacks below on mobile) -->
+      <!-- Right column: tabbed Positions / History -->
       <div class="flex flex-col gap-2">
-        {#if rows.length > 0}
-          <div class="flex items-center gap-2 text-xs text-base-content/60 px-1 ml-auto">
-            <span>Rows</span>
-            <select class="select select-bordered select-xs w-24" bind:value={numRows} on:change={() => worker.postMessage({ type: "CALCULATE", numRows })}>
-              <option value={100}>100</option>
-              <option value={200}>200</option>
-              <option value={300}>300</option>
-              <option value={400}>400</option>
-              <option value={500}>500</option>
-            </select>
-          </div>
-          <div class="overflow-x-auto md:max-h-[calc(100vh-10rem)] max-h-[50vh] overflow-y-auto">
-            <table class="table table-md table-pin-rows">
-              <thead>
-                <tr>
-                  <th>Index</th>
-                  <th>Heal</th>
-                  <th>%</th>
-                  {#each chests as _, i}<th>Chest {i + 1}</th>{/each}
-                </tr>
-              </thead>
-              <tbody>
-                {#each rows as row}
-                  <tr
-                    class={row.isPastRng ? "bg-emerald-100 text-emerald-600 dark:bg-emerald-950 dark:text-emerald-600" : ""}
-                    class:row-selected={!row.isPastRng && selectedRows.has(row.index)}
-                    class:cursor-pointer={!row.isPastRng}
-                    on:click={() => { if (!row.isPastRng) toggleRow(row.index); }}
-                  >
-                    <td>{row.index}</td>
-                    <td>{row.currentHeal}</td>
-                    <td>{row.randToPercent}</td>
-                    {#each row.chestRewards as reward, i}
-                      <td class={chestCellClass(i, reward, row.isPastRng)}>
-                        {reward.reward === "Gil" ? `${reward.gilAmount} gil` : reward.reward}
-                      </td>
-                    {/each}
+
+        <!-- Tab bar -->
+        <div role="tablist" class="tabs tabs-bordered">
+          <button role="tab" class="tab" class:tab-active={activeRightTab === 'positions'} on:click={() => activeRightTab = 'positions'}>Positions</button>
+          <button role="tab" class="tab" class:tab-active={activeRightTab === 'history'} on:click={() => activeRightTab = 'history'}>
+            History
+            {#if historyLog.length > 0}<span class="badge badge-xs ml-1">{historyLog.length}</span>{/if}
+          </button>
+        </div>
+
+        {#if activeRightTab === 'positions'}
+          {#if rows.length > 0}
+            <div class="flex items-center gap-2 text-xs text-base-content/60 px-1 ml-auto">
+              <span>Rows</span>
+              <select class="select select-bordered select-xs w-24" bind:value={numRows} on:change={() => worker.postMessage({ type: "CALCULATE", numRows })}>
+                <option value={100}>100</option>
+                <option value={200}>200</option>
+                <option value={300}>300</option>
+                <option value={400}>400</option>
+                <option value={500}>500</option>
+              </select>
+            </div>
+            <div class="overflow-x-auto md:max-h-[calc(100vh-10rem)] max-h-[50vh] overflow-y-auto">
+              <table class="table table-md table-pin-rows">
+                <thead>
+                  <tr>
+                    <th>Index</th>
+                    <th>Heal</th>
+                    <th>%</th>
+                    {#each chests as _, i}<th>Chest {i + 1}</th>{/each}
                   </tr>
-                {/each}
-              </tbody>
-            </table>
-          </div>
+                </thead>
+                <tbody>
+                  {#each rows as row}
+                    <tr
+                      class={row.isPastRng ? "bg-emerald-100 text-emerald-600 dark:bg-emerald-950 dark:text-emerald-600" : ""}
+                      class:row-selected={!row.isPastRng && selectedRows.has(row.index)}
+                      class:cursor-pointer={!row.isPastRng}
+                      on:click={() => { if (!row.isPastRng) toggleRow(row.index); }}
+                    >
+                      <td>{row.index}</td>
+                      <td>{row.currentHeal}</td>
+                      <td>{row.randToPercent}</td>
+                      {#each row.chestRewards as reward, i}
+                        <td class={chestCellClass(i, reward, row.isPastRng)}>
+                          {reward.reward === "Gil" ? `${reward.gilAmount} gil` : reward.reward}
+                        </td>
+                      {/each}
+                    </tr>
+                  {/each}
+                </tbody>
+              </table>
+            </div>
+          {:else}
+            <p class="text-xs text-base-content/40 px-1">Run Begin to see positions.</p>
+          {/if}
+
+        {:else}
+          <!-- History tab -->
+          {#if historyLog.length > 0}
+            <div class="overflow-y-auto md:max-h-[calc(100vh-10rem)] max-h-[50vh] flex flex-col gap-2">
+              {#each historyLog as entry}
+                <div class="card bg-base-200 p-3 flex flex-col gap-2">
+                  <div class="flex items-center gap-2">
+                    <span class="badge badge-sm {entry.action === 'heal' ? 'badge-primary' : 'badge-secondary'}">{entry.label}</span>
+                    <span class="text-xs text-base-content/50">idx <strong class="text-base-content">{entry.rngIndex}</strong></span>
+                    <span class="text-xs text-base-content/50">heal <strong class="text-base-content">{entry.heal}</strong></span>
+                  </div>
+                  <div class="flex flex-wrap gap-2">
+                    {#each entry.chestRewards as reward, i}
+                      <span class="text-xs {chestCellClass(i, reward, false)} px-2 py-0.5 rounded">
+                        C{i + 1}: {reward.reward === 'Gil' ? `${reward.gilAmount} gil` : reward.reward}{reward.chestWillSpawn ? ' ✓' : ''}
+                      </span>
+                    {/each}
+                  </div>
+                </div>
+              {/each}
+            </div>
+          {:else}
+            <p class="text-xs text-base-content/40 px-1">No history yet. Begin tracking to see entries.</p>
+          {/if}
         {/if}
+
       </div>
 
     </div>
