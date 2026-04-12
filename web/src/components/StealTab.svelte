@@ -157,8 +157,12 @@
       <table class="table table-md table-pin-rows">
         <thead>
           <tr>
-            <th>Index</th><th>Heal</th><th>%</th>
-            <th>Normal steal</th><th>Cuffs steal</th><th>Lv99 Chocobo</th>
+            <th>Index<span class="tooltip tooltip-bottom inline-block normal-case font-normal" data-tip="Position in the RNG sequence."><span class="cursor-help opacity-40 hover:opacity-100">ⓘ</span></span></th>
+            <th>Heal<span class="tooltip tooltip-bottom inline-block normal-case font-normal" data-tip="What a heal produces at this RNG position."><span class="cursor-help opacity-40 hover:opacity-100">ⓘ</span></span></th>
+            <th>%<span class="tooltip tooltip-bottom inline-block normal-case font-normal" data-tip="rng mod 100 — compared against steal thresholds."><span class="cursor-help opacity-40 hover:opacity-100">ⓘ</span></span></th>
+            <th>Normal steal<span class="tooltip tooltip-bottom inline-block normal-case font-normal" data-tip="Item obtained with a normal steal at this position."><span class="cursor-help opacity-40 hover:opacity-100">ⓘ</span></span></th>
+            <th>Cuffs steal<span class="tooltip tooltip-bottom inline-block normal-case font-normal" data-tip="Item obtained when stealing with Thief's Cuffs equipped."><span class="cursor-help opacity-40 hover:opacity-100">ⓘ</span></span></th>
+            <th>Lv99 Chocobo<span class="tooltip tooltip-bottom inline-block normal-case font-normal" data-tip="Whether a level 99 Red Chocobo can be stolen at this position."><span class="cursor-help opacity-40 hover:opacity-100">ⓘ</span></span></th>
           </tr>
         </thead>
         <tbody>

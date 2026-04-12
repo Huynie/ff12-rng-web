@@ -136,15 +136,15 @@
           </div>
           <div class="grid grid-cols-3 gap-2 text-sm">
             <label class="flex flex-col gap-1">
-              <span class="text-xs text-base-content/50">Min %</span>
+              <span class="text-xs text-base-content/50">Min %<span class="tooltip tooltip-right inline-block normal-case font-normal" data-tip="Minimum spawn probability, usually 0."><span class="cursor-help opacity-50 hover:opacity-100">ⓘ</span></span></span>
               <input type="number" class="input input-bordered input-sm w-full" bind:value={m.minChance} />
             </label>
             <label class="flex flex-col gap-1">
-              <span class="text-xs text-base-content/50">Max %</span>
+              <span class="text-xs text-base-content/50">Max %<span class="tooltip tooltip-right inline-block normal-case font-normal" data-tip="Maximum spawn probability from game data (e.g. 20 = 20% chance)."><span class="cursor-help opacity-50 hover:opacity-100">ⓘ</span></span></span>
               <input type="number" class="input input-bordered input-sm w-full" bind:value={m.maxChance} />
             </label>
             <label class="flex flex-col gap-1">
-              <span class="text-xs text-base-content/50">RNG pos</span>
+              <span class="text-xs text-base-content/50">RNG pos<span class="tooltip tooltip-right inline-block normal-case font-normal" data-tip="Which RNG draw after zoning triggers the spawn check. Usually the last value consumed."><span class="cursor-help opacity-50 hover:opacity-100">ⓘ</span></span></span>
               <input type="number" class="input input-bordered input-sm w-full" bind:value={m.rngPosition} />
             </label>
           </div>
@@ -200,9 +200,11 @@
       <table class="table table-md table-pin-rows">
         <thead>
           <tr>
-            <th>Index</th><th>Heal</th>
-            <th>Spawn %</th><th>Raw RNG</th>
-            {#each monsters as _, i}<th>M{i + 1}</th>{/each}
+            <th>Index<span class="tooltip tooltip-bottom inline-block normal-case font-normal" data-tip="Position in the RNG sequence."><span class="cursor-help opacity-40 hover:opacity-100">ⓘ</span></span></th>
+            <th>Heal<span class="tooltip tooltip-bottom inline-block normal-case font-normal" data-tip="What a heal produces at this RNG position."><span class="cursor-help opacity-40 hover:opacity-100">ⓘ</span></span></th>
+            <th>Spawn %<span class="tooltip tooltip-bottom inline-block normal-case font-normal" data-tip="The computed spawn probability at this RNG position."><span class="cursor-help opacity-40 hover:opacity-100">ⓘ</span></span></th>
+            <th>Raw RNG<span class="tooltip tooltip-bottom inline-block normal-case font-normal" data-tip="The raw RNG value before any modulo operation."><span class="cursor-help opacity-40 hover:opacity-100">ⓘ</span></span></th>
+            {#each monsters as _, i}<th>M{i + 1}<span class="tooltip tooltip-bottom inline-block normal-case font-normal" data-tip="Monster {i + 1} spawns at this RNG position."><span class="cursor-help opacity-40 hover:opacity-100">ⓘ</span></span></th>{/each}
           </tr>
         </thead>
         <tbody>

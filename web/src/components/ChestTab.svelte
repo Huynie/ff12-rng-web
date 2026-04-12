@@ -382,30 +382,30 @@
                 <div class="flex gap-5 text-sm">
                   <div class="flex flex-col gap-1">
                     <label class="flex items-center gap-2">
-                      <span class="text-xs text-base-content/50 w-14">RNG pos</span>
+                      <span class="text-xs text-base-content/50 min-w-14">RNG pos<span class="tooltip tooltip-right inline-block normal-case font-normal" data-tip="The position of this chest in the zone's chest loading order. Each chest in a zone consumes one RNG draw when you enter, in a fixed order. For example, the Zodiac Spear is position 8 because it's the 8th chest to load (after all single-spawn chests in that area have been permanently opened). Find this value by trial and error or from community guides."><span class="cursor-help opacity-50 hover:opacity-100">ⓘ</span></span></span>
                       <input type="number" class="input input-bordered input-sm flex-1 min-w-0" bind:value={chest.rngPosition} />
                     </label>
                     <label class="flex items-center gap-2">
-                      <span class="text-xs text-base-content/50 w-14">Spawn %</span>
+                      <span class="text-xs text-base-content/50 min-w-14">Spawn %<span class="tooltip tooltip-right inline-block normal-case font-normal" data-tip="Probability the chest appears when you zone in (e.g. 1 for Gendarme, 50 for common chests)."><span class="cursor-help opacity-50 hover:opacity-100">ⓘ</span></span></span>
                       <input type="number" class="input input-bordered input-sm flex-1 min-w-0" bind:value={chest.spawnChance} />
                     </label>
                     <label class="flex items-center gap-2">
-                      <span class="text-xs text-base-content/50 w-14">Item 1 %</span>
+                      <span class="text-xs text-base-content/50 min-w-14">Item 1 %<span class="tooltip tooltip-right inline-block normal-case font-normal" data-tip="If it's an item, probability it's Item 1 vs Item 2."><span class="cursor-help opacity-50 hover:opacity-100">ⓘ</span></span></span>
                       <input type="number" class="input input-bordered input-sm flex-1 min-w-0" bind:value={chest.itemChance} />
                     </label>
                   </div>
                   <div class="flex flex-col gap-1">
                     <label class="flex items-center gap-2">
-                      <span class="text-xs text-base-content/50 w-14">Gil %</span>
+                      <span class="text-xs text-base-content/50 min-w-14">Gil %<span class="tooltip tooltip-right inline-block normal-case font-normal" data-tip="If the chest spawns, probability it contains gil instead of an item."><span class="cursor-help opacity-50 hover:opacity-100">ⓘ</span></span></span>
                       <input type="number" class="input input-bordered input-sm flex-1 min-w-0" bind:value={chest.gilChance} />
                     </label>
                     <label class="flex items-center gap-2">
-                      <span class="text-xs text-base-content/50 w-14">Gil amt</span>
+                      <span class="text-xs text-base-content/50 min-w-14">Gil amt<span class="tooltip tooltip-right inline-block normal-case font-normal" data-tip="Max gil the chest can contain. Actual amount = 1 + (rng mod gilAmt)."><span class="cursor-help opacity-50 hover:opacity-100">ⓘ</span></span></span>
                       <input type="number" class="input input-bordered input-sm flex-1 min-w-0" bind:value={chest.gilAmount} />
                     </label>
                     <label class="flex items-center gap-2 cursor-pointer h-10">
                       <input type="checkbox" class="checkbox checkbox-sm" bind:checked={chest.wantItem1} />
-                      <span class="text-xs">Want Item 1</span>
+                      <span class="text-xs">Want Item 1<span class="tooltip tooltip-right inline-block normal-case font-normal" data-tip="Check if your desired item is Item 1. The app finds the nearest bold row where it lands."><span class="cursor-help opacity-50 hover:opacity-100">ⓘ</span></span></span>
                     </label>
                   </div>
                 </div>
@@ -436,7 +436,7 @@
 
         <!-- Advance directions -->
         <div class="card bg-base-200 p-4 flex flex-col gap-2">
-          <h3 class="font-semibold text-sm">Advance directions</h3>
+          <h3 class="font-semibold text-sm">Advance directions<span class="tooltip tooltip-bottom inline-block normal-case font-normal" data-tip="How many RNG positions to consume before zoning to land on your target chest result."><span class="cursor-help opacity-40 hover:opacity-100">ⓘ</span></span></h3>
           {#if advanceDirections.length > 0}
             <div class="grid gap-x-5 gap-y-3 text-sm" style="grid-template-columns: repeat({advanceDirections.length}, 1fr)">
               {#each advanceDirections as _, i}
@@ -444,14 +444,14 @@
               {/each}
               {#each advanceDirections as d, i}
                 {#if i === 0}
-                  <span class="badge badge-md border-blue-400 bg-blue-100 text-blue-700 dark:border-blue-500 dark:bg-blue-900/30 dark:text-blue-300">{#if d.advanceToAppear >= 0}<strong>{d.advanceToAppear}</strong> to spawn{:else}Out of range{/if}</span>
+                  <span class="badge badge-md border-blue-400 bg-blue-100 text-blue-700 dark:border-blue-500 dark:bg-blue-900/30 dark:text-blue-300">{#if d.advanceToAppear >= 0}<strong>{d.advanceToAppear}</strong> to spawn{:else}Out of range{/if}{#if i === 0}<span class="tooltip tooltip-left inline-block normal-case font-normal" data-tip="Advance RNG by this many before zoning to make the chest appear."><span class="cursor-help opacity-50 hover:opacity-100">ⓘ</span></span>{/if}</span>
                 {:else}
                   <span class="badge badge-md border-cyan-400 bg-cyan-100 text-cyan-700 dark:border-cyan-500 dark:bg-cyan-900/30 dark:text-cyan-300">{#if d.advanceToAppear >= 0}<strong>{d.advanceToAppear}</strong> to spawn{:else}Out of range{/if}</span>
                 {/if}
               {/each}
               {#each advanceDirections as d, i}
                 {#if i === 0}
-                  <span class="badge badge-md border-indigo-500 bg-indigo-200 text-indigo-800 dark:border-indigo-400 dark:bg-indigo-900/40 dark:text-indigo-200">{#if d.advanceForItem >= 0}<strong>{d.advanceForItem}</strong> to item{:else}Out of range{/if}</span>
+                  <span class="badge badge-md border-indigo-500 bg-indigo-200 text-indigo-800 dark:border-indigo-400 dark:bg-indigo-900/40 dark:text-indigo-200">{#if d.advanceForItem >= 0}<strong>{d.advanceForItem}</strong> to item{:else}Out of range{/if}{#if i === 0}<span class="tooltip tooltip-left inline-block normal-case font-normal" data-tip="Advance RNG by this many to land on a row where the chest spawns AND contains your desired item."><span class="cursor-help opacity-50 hover:opacity-100">ⓘ</span></span>{/if}</span>
                 {:else}
                   <span class="badge badge-md border-sky-500 bg-sky-200 text-sky-800 dark:border-sky-400 dark:bg-sky-900/40 dark:text-sky-200">{#if d.advanceForItem >= 0}<strong>{d.advanceForItem}</strong> to item{:else}Out of range{/if}</span>
                 {/if}
@@ -492,10 +492,10 @@
               <table class="table table-md table-pin-rows">
                 <thead>
                   <tr>
-                    <th>Index</th>
-                    <th>Heal</th>
-                    <th>%</th>
-                    {#each chests as _, i}<th>Chest {i + 1}</th>{/each}
+                    <th>Index<span class="tooltip tooltip-bottom inline-block normal-case font-normal" data-tip="Position in the RNG sequence."><span class="cursor-help opacity-40 hover:opacity-100">ⓘ</span></span></th>
+                    <th>Heal<span class="tooltip tooltip-bottom inline-block normal-case font-normal" data-tip="What a heal produces at this RNG position."><span class="cursor-help opacity-40 hover:opacity-100">ⓘ</span></span></th>
+                    <th>%<span class="tooltip tooltip-bottom inline-block normal-case font-normal" data-tip="rng mod 100 — compared against all chest probabilities. Only % = 0 passes a 1% spawn check."><span class="cursor-help opacity-40 hover:opacity-100">ⓘ</span></span></th>
+                    {#each chests as _, i}<th>Chest {i + 1}<span class="tooltip tooltip-bottom inline-block normal-case font-normal" data-tip="Bold = the chest physically spawns at this position. Highlighted = lands on your desired item."><span class="cursor-help opacity-40 hover:opacity-100">ⓘ</span></span></th>{/each}
                   </tr>
                 </thead>
                 <tbody>
