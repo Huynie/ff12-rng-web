@@ -58,7 +58,6 @@
     ];
 
     let healValue = "";
-    let healHistory: number[] = [];
     let numRows = 100;
     let consumeCount = 10;
     let loading = false;
@@ -77,6 +76,7 @@
     type HistoryEntry = {
         action: 'heal' | 'attack';
         label: string;
+        value: number; // heal value for 'heal', count for 'attack'
         rngIndex: number;
         heal: number;
         chestRewards: SerializedChestInstance['chestRewards'];
@@ -84,7 +84,7 @@
     };
     let historyLog: HistoryEntry[] = [];
     let activeRightTab: 'positions' | 'history' = 'positions';
-    let pendingHistoryEntry: { action: 'heal' | 'attack'; label: string } | null = null;
+    let pendingHistoryEntry: { action: 'heal' | 'attack'; label: string; value: number } | null = null;
 
     function toggleRow(index: number) {
         selectedRows = new Set(
@@ -107,16 +107,17 @@
         const saved = loadTabState<{
             chars: typeof chars;
             chests: typeof chests;
-            healHistory: number[];
+            historyLog: HistoryEntry[];
         }>("chest");
         if (saved?.chars) chars = saved.chars;
         if (saved?.chests) chests = saved.chests;
-        if (saved?.healHistory) healHistory = saved.healHistory;
+        if (saved?.historyLog) historyLog = saved.historyLog;
         initialized = true;
 
-        if (healHistory.length > 0) {
+        if (historyLog.length > 0) {
             loading = true;
-            const history = [...healHistory];
+            // Replay is oldest-first, but historyLog is newest-first
+            const replayLog = [...historyLog].reverse();
             const characters = chars
                 .filter((c) => c.level !== "" && c.magic !== "")
                 .map((c) => ({
@@ -137,19 +138,17 @@
             const replay = (e: MessageEvent<WorkerMessage>) => {
                 const msg = e.data;
                 if (msg.type === "READY") {
-                    worker.postMessage({
-                        type: "FIND_FIRST",
-                        healValue: history[0],
-                        numRows,
-                    });
+                    const first = replayLog[0];
+                    worker.postMessage({ type: "FIND_FIRST", healValue: first.value, numRows });
                     step = 1;
                 } else if (msg.type === "RESULT") {
-                    if (step < history.length) {
-                        worker.postMessage({
-                            type: "FIND_NEXT",
-                            healValue: history[step],
-                            numRows,
-                        });
+                    if (step < replayLog.length) {
+                        const entry = replayLog[step];
+                        if (entry.action === 'heal') {
+                            worker.postMessage({ type: "FIND_NEXT", healValue: entry.value, numRows });
+                        } else {
+                            worker.postMessage({ type: "CONSUME", count: entry.value, numRows });
+                        }
                         step++;
                     } else {
                         worker.onmessage = handleWorkerMessage;
@@ -188,6 +187,7 @@
                     historyLog = [{
                         action: pendingHistoryEntry.action,
                         label: pendingHistoryEntry.label,
+                        value: pendingHistoryEntry.value,
                         rngIndex: current.index,
                         heal: current.currentHeal,
                         chestRewards: current.chestRewards,
@@ -217,17 +217,10 @@
         });
     }
 
-    function pushHealHistory(val: number) {
-        healHistory = [...healHistory, val].slice(-4);
-        saveTabState("chest", { chars, chests, healHistory });
-    }
-
     function onBegin() {
         if (!healValue) return;
-        healHistory = [];
         historyLog = [];
-        pushHealHistory(Number(healValue));
-        pendingHistoryEntry = { action: 'heal', label: `Heal ${healValue}` };
+        pendingHistoryEntry = { action: 'heal', label: `Heal ${healValue}`, value: Number(healValue) };
         errorMsg = "";
         loading = true;
         canContinue = false;
@@ -249,8 +242,7 @@
 
     function onContinue() {
         if (!healValue) return;
-        pushHealHistory(Number(healValue));
-        pendingHistoryEntry = { action: 'heal', label: `Heal ${healValue}` };
+        pendingHistoryEntry = { action: 'heal', label: `Heal ${healValue}`, value: Number(healValue) };
         errorMsg = "";
         loading = true;
         worker.postMessage({
@@ -261,7 +253,7 @@
     }
 
     function onConsume(e: CustomEvent<number>) {
-        pendingHistoryEntry = { action: 'attack', label: `Attack ×${e.detail}` };
+        pendingHistoryEntry = { action: 'attack', label: `Attack ×${e.detail}`, value: e.detail };
         errorMsg = "";
         loading = true;
         worker.postMessage({ type: "CONSUME", count: e.detail, numRows });
@@ -277,8 +269,7 @@
         nextExpectedHeal = null;
         comboInfo = -1;
         healValue = "";
-        healHistory = [];
-        saveTabState("chest", { chars, chests, healHistory: [] });
+        saveTabState("chest", { chars, chests, historyLog: [] });
         worker.postMessage({ type: "REINIT" });
     }
 
@@ -336,7 +327,7 @@
     }
 
     $: if (nextExpectedHeal !== null) canContinue = true;
-    $: if (initialized) saveTabState("chest", { chars, chests, healHistory });
+    $: if (initialized) saveTabState("chest", { chars, chests, historyLog });
 
     // Highlight all rows from the first future row up to each chest's rng position (inclusive)
     $: rngPosRowIndices = (() => {
