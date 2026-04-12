@@ -337,6 +337,22 @@
 
     $: if (nextExpectedHeal !== null) canContinue = true;
     $: if (initialized) saveTabState("chest", { chars, chests, healHistory });
+
+    // Highlight all rows from the first future row up to each chest's rng position (inclusive)
+    $: rngPosRowIndices = (() => {
+        const firstFutureIdx = rows.findIndex((r) => !r.isPastRng);
+        if (firstFutureIdx === -1) return new Map<number, number>();
+        const map = new Map<number, number>(); // rowIdx → chestIndex (first chest wins on overlap)
+        chests.slice().reverse().forEach((chest, rci) => {
+            const ci = chests.length - 1 - rci;
+            if (chest.rngPosition > 0) {
+                for (let i = 0; i < chest.rngPosition; i++) {
+                    map.set(firstFutureIdx + i, ci);
+                }
+            }
+        });
+        return map;
+    })();
 </script>
 
 <div class="flex flex-col gap-4 p-2 md:p-4">
@@ -499,9 +515,14 @@
                   </tr>
                 </thead>
                 <tbody>
-                  {#each rows as row}
+                  {#each rows as row, rowIdx}
+                    {@const chestHighlight = rngPosRowIndices.get(rowIdx)}
                     <tr
-                      class={row.isPastRng ? "bg-emerald-100 text-emerald-600 dark:bg-emerald-950 dark:text-emerald-600" : ""}
+                      class={row.isPastRng
+                        ? "bg-emerald-100 text-emerald-600 dark:bg-emerald-950 dark:text-emerald-600"
+                        : chestHighlight === 0 ? "bg-fuchsia-100 dark:bg-fuchsia-900/20"
+                        : chestHighlight === 1 ? "bg-fuchsia-100 dark:bg-fuchsia-900/20"
+                        : ""}
                       class:row-selected={!row.isPastRng && selectedRows.has(row.index)}
                       class:cursor-pointer={!row.isPastRng}
                       on:click={() => { if (!row.isPastRng) toggleRow(row.index); }}
