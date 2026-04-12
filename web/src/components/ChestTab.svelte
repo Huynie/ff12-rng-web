@@ -317,195 +317,73 @@
         >
     </div>
 
-    <!-- Row 1: mobile: Characters→Chests→Heal / desktop: 2-col grid -->
-    <div class="flex flex-col md:grid md:grid-cols-2 gap-4">
-        <!-- Characters: mobile order 1, desktop col 1 row 1 -->
-        <div class="card bg-base-200 p-4 flex flex-col gap-4 order-1">
-            <h3 class="font-semibold text-sm">Characters</h3>
-            <div class="grid grid-cols-3 gap-4">
-                {#each chars as c, i}
-                    <CharacterInputRow
-                        label="Char {i + 1}"
-                        bind:level={c.level}
-                        bind:magic={c.magic}
-                        bind:spell={c.spell}
-                        bind:serenity={c.serenity}
-                    />
-                {/each}
-            </div>
+    <!-- 2-col on desktop: left = panels, right = table. Mobile: single stack. -->
+    <div class="flex flex-col md:grid md:grid-cols-2 md:items-start gap-4">
+
+      <!-- Left column: all panels stacked (also the full mobile stack) -->
+      <div class="flex flex-col gap-4">
+
+        <!-- Characters -->
+        <div class="card bg-base-200 p-4 flex flex-col gap-4">
+          <h3 class="font-semibold text-sm">Characters</h3>
+          <div class="grid grid-cols-3 gap-4">
+            {#each chars as c, i}
+              <CharacterInputRow
+                label="Char {i + 1}"
+                bind:level={c.level}
+                bind:magic={c.magic}
+                bind:spell={c.spell}
+                bind:serenity={c.serenity}
+              />
+            {/each}
+          </div>
         </div>
 
-        <!-- Chests: mobile order 2, desktop col 2 rows 1-2 -->
-        <div
-            class="card bg-base-200 p-4 flex flex-col gap-4 order-2 md:row-span-2"
-        >
-            <h3 class="font-semibold text-sm">Chests</h3>
-            <div class="flex flex-col gap-4">
-                {#each chests as chest, i}
-                    <div class="flex flex-col gap-3">
-                        <span
-                            class="text-xs font-semibold text-base-content/60 uppercase tracking-wide"
-                            >Chest {i + 1}</span
-                        >
-                        <div class="flex gap-5 text-sm">
-                            <div class="flex flex-col gap-1">
-                                <label class="flex items-center gap-2">
-                                    <span
-                                        class="text-xs text-base-content/50 w-14"
-                                        >RNG pos</span
-                                    >
-                                    <input
-                                        type="number"
-                                        class="input input-bordered input-sm flex-1 min-w-0"
-                                        bind:value={chest.rngPosition}
-                                    />
-                                </label>
-                                <label class="flex items-center gap-2">
-                                    <span
-                                        class="text-xs text-base-content/50 w-14"
-                                        >Spawn %</span
-                                    >
-                                    <input
-                                        type="number"
-                                        class="input input-bordered input-sm flex-1 min-w-0"
-                                        bind:value={chest.spawnChance}
-                                    />
-                                </label>
-                                <label class="flex items-center gap-2">
-                                    <span
-                                        class="text-xs text-base-content/50 w-14"
-                                        >Item 1 %</span
-                                    >
-                                    <input
-                                        type="number"
-                                        class="input input-bordered input-sm flex-1 min-w-0"
-                                        bind:value={chest.itemChance}
-                                    />
-                                </label>
-                            </div>
-                            <div class="flex flex-col gap-1">
-                                <label class="flex items-center gap-2">
-                                    <span
-                                        class="text-xs text-base-content/50 w-14"
-                                        >Gil %</span
-                                    >
-                                    <input
-                                        type="number"
-                                        class="input input-bordered input-sm flex-1 min-w-0"
-                                        bind:value={chest.gilChance}
-                                    />
-                                </label>
-                                <label class="flex items-center gap-2">
-                                    <span
-                                        class="text-xs text-base-content/50 w-14"
-                                        >Gil amt</span
-                                    >
-                                    <input
-                                        type="number"
-                                        class="input input-bordered input-sm flex-1 min-w-0"
-                                        bind:value={chest.gilAmount}
-                                    />
-                                </label>
-                                <label
-                                    class="flex items-center gap-2 cursor-pointer h-10"
-                                >
-                                    <input
-                                        type="checkbox"
-                                        class="checkbox checkbox-sm"
-                                        bind:checked={chest.wantItem1}
-                                    />
-                                    <span class="text-xs">Want Item 1</span>
-                                </label>
-                            </div>
-                        </div>
-                    </div>
-                {/each}
-            </div>
+        <!-- Chests -->
+        <div class="card bg-base-200 p-4 flex flex-col gap-4">
+          <h3 class="font-semibold text-sm">Chests</h3>
+          <div class="flex flex-col gap-4">
+            {#each chests as chest, i}
+              <div class="flex flex-col gap-3">
+                <span class="text-xs font-semibold text-base-content/60 uppercase tracking-wide">Chest {i + 1}</span>
+                <div class="flex gap-5 text-sm">
+                  <div class="flex flex-col gap-1">
+                    <label class="flex items-center gap-2">
+                      <span class="text-xs text-base-content/50 w-14">RNG pos</span>
+                      <input type="number" class="input input-bordered input-sm flex-1 min-w-0" bind:value={chest.rngPosition} />
+                    </label>
+                    <label class="flex items-center gap-2">
+                      <span class="text-xs text-base-content/50 w-14">Spawn %</span>
+                      <input type="number" class="input input-bordered input-sm flex-1 min-w-0" bind:value={chest.spawnChance} />
+                    </label>
+                    <label class="flex items-center gap-2">
+                      <span class="text-xs text-base-content/50 w-14">Item 1 %</span>
+                      <input type="number" class="input input-bordered input-sm flex-1 min-w-0" bind:value={chest.itemChance} />
+                    </label>
+                  </div>
+                  <div class="flex flex-col gap-1">
+                    <label class="flex items-center gap-2">
+                      <span class="text-xs text-base-content/50 w-14">Gil %</span>
+                      <input type="number" class="input input-bordered input-sm flex-1 min-w-0" bind:value={chest.gilChance} />
+                    </label>
+                    <label class="flex items-center gap-2">
+                      <span class="text-xs text-base-content/50 w-14">Gil amt</span>
+                      <input type="number" class="input input-bordered input-sm flex-1 min-w-0" bind:value={chest.gilAmount} />
+                    </label>
+                    <label class="flex items-center gap-2 cursor-pointer h-10">
+                      <input type="checkbox" class="checkbox checkbox-sm" bind:checked={chest.wantItem1} />
+                      <span class="text-xs">Want Item 1</span>
+                    </label>
+                  </div>
+                </div>
+              </div>
+            {/each}
+          </div>
         </div>
 
-        <!-- Heal controls: desktop col 1 row 2 (hidden on mobile) -->
-        <div class="hidden md:block card bg-base-200 p-4 order-3">
-            <HealInput
-                bind:healValue
-                bind:numRows
-                bind:consumeCount
-                {loading}
-                {canContinue}
-                {comboInfo}
-                on:begin={onBegin}
-                on:continue={onContinue}
-                on:consume={onConsume}
-                on:clear={onClear}
-                on:recalculate={onRecalculate}
-            />
-            {#if errorMsg}
-                <div class="alert alert-error text-sm mt-3">{errorMsg}</div>
-            {/if}
-        </div>
-    </div>
-
-    <!-- Row 2: Advance directions (full width) -->
-    <div class="card bg-base-200 p-4 flex flex-col gap-2">
-        <h3 class="font-semibold text-sm">Advance directions</h3>
-        {#if advanceDirections.length > 0}
-            <div
-                class="grid gap-x-5 gap-y-3 text-sm"
-                style="grid-template-columns: repeat({advanceDirections.length}, 1fr)"
-            >
-                <!-- Chest titles -->
-                {#each advanceDirections as _, i}
-                    <span
-                        class="text-sm font-semibold text-base-content/60 uppercase tracking-wide"
-                        >Chest {i + 1}</span
-                    >
-                {/each}
-                <!-- Until spawn -->
-                {#each advanceDirections as d, i}
-                    {#if i === 0}
-                        <span
-                            class="badge badge-md border-blue-400 bg-blue-100 text-blue-700 dark:border-blue-500 dark:bg-blue-900/30 dark:text-blue-300"
-                            >{#if d.advanceToAppear >= 0}<strong
-                                    >{d.advanceToAppear}</strong
-                                > to spawn{:else}Out of range{/if}</span
-                        >
-                    {:else}
-                        <span
-                            class="badge badge-md border-cyan-400 bg-cyan-100 text-cyan-700 dark:border-cyan-500 dark:bg-cyan-900/30 dark:text-cyan-300"
-                            >{#if d.advanceToAppear >= 0}<strong
-                                    >{d.advanceToAppear}</strong
-                                > to spawn{:else}Out of range{/if}</span
-                        >
-                    {/if}
-                {/each}
-                <!-- Until item -->
-                {#each advanceDirections as d, i}
-                    {#if i === 0}
-                        <span
-                            class="badge badge-md border-indigo-500 bg-indigo-200 text-indigo-800 dark:border-indigo-400 dark:bg-indigo-900/40 dark:text-indigo-200"
-                            >{#if d.advanceForItem >= 0}<strong
-                                    >{d.advanceForItem}</strong
-                                > to item{:else}Out of range{/if}</span
-                        >
-                    {:else}
-                        <span
-                            class="badge badge-md border-sky-500 bg-sky-200 text-sky-800 dark:border-sky-400 dark:bg-sky-900/40 dark:text-sky-200"
-                            >{#if d.advanceForItem >= 0}<strong
-                                    >{d.advanceForItem}</strong
-                                > to item{:else}Out of range{/if}</span
-                        >
-                    {/if}
-                {/each}
-            </div>
-        {:else}
-            <p class="text-xs text-base-content/40">
-                Run Begin to see directions.
-            </p>
-        {/if}
-    </div>
-
-    <!-- Heal controls: mobile only (below advance directions) -->
-    <div class="md:hidden card bg-base-200 p-4">
-        <HealInput
+        <!-- Heal controls -->
+        <div class="card bg-base-200 p-4">
+          <HealInput
             bind:healValue
             bind:numRows
             bind:consumeCount
@@ -517,71 +395,88 @@
             on:consume={onConsume}
             on:clear={onClear}
             on:recalculate={onRecalculate}
-        />
-        {#if errorMsg}
+          />
+          {#if errorMsg}
             <div class="alert alert-error text-sm mt-3">{errorMsg}</div>
-        {/if}
-    </div>
+          {/if}
+        </div>
 
-    <!-- Row 3: Results table -->
-    {#if rows.length > 0}
-        <div
-            class="flex items-center gap-2 text-xs text-base-content/60 px-1 ml-auto"
-        >
+        <!-- Advance directions -->
+        <div class="card bg-base-200 p-4 flex flex-col gap-2">
+          <h3 class="font-semibold text-sm">Advance directions</h3>
+          {#if advanceDirections.length > 0}
+            <div class="grid gap-x-5 gap-y-3 text-sm" style="grid-template-columns: repeat({advanceDirections.length}, 1fr)">
+              {#each advanceDirections as _, i}
+                <span class="text-sm font-semibold text-base-content/60 uppercase tracking-wide">Chest {i + 1}</span>
+              {/each}
+              {#each advanceDirections as d, i}
+                {#if i === 0}
+                  <span class="badge badge-md border-blue-400 bg-blue-100 text-blue-700 dark:border-blue-500 dark:bg-blue-900/30 dark:text-blue-300">{#if d.advanceToAppear >= 0}<strong>{d.advanceToAppear}</strong> to spawn{:else}Out of range{/if}</span>
+                {:else}
+                  <span class="badge badge-md border-cyan-400 bg-cyan-100 text-cyan-700 dark:border-cyan-500 dark:bg-cyan-900/30 dark:text-cyan-300">{#if d.advanceToAppear >= 0}<strong>{d.advanceToAppear}</strong> to spawn{:else}Out of range{/if}</span>
+                {/if}
+              {/each}
+              {#each advanceDirections as d, i}
+                {#if i === 0}
+                  <span class="badge badge-md border-indigo-500 bg-indigo-200 text-indigo-800 dark:border-indigo-400 dark:bg-indigo-900/40 dark:text-indigo-200">{#if d.advanceForItem >= 0}<strong>{d.advanceForItem}</strong> to item{:else}Out of range{/if}</span>
+                {:else}
+                  <span class="badge badge-md border-sky-500 bg-sky-200 text-sky-800 dark:border-sky-400 dark:bg-sky-900/40 dark:text-sky-200">{#if d.advanceForItem >= 0}<strong>{d.advanceForItem}</strong> to item{:else}Out of range{/if}</span>
+                {/if}
+              {/each}
+            </div>
+          {:else}
+            <p class="text-xs text-base-content/40">Run Begin to see directions.</p>
+          {/if}
+        </div>
+
+      </div>
+
+      <!-- Right column: table (stacks below on mobile) -->
+      <div class="flex flex-col gap-2">
+        {#if rows.length > 0}
+          <div class="flex items-center gap-2 text-xs text-base-content/60 px-1 ml-auto">
             <span>Rows</span>
-            <select
-                class="select select-bordered select-xs w-24"
-                bind:value={numRows}
-                on:change={() =>
-                    worker.postMessage({ type: "CALCULATE", numRows })}
-                ><option value={100}>100</option><option value={200}>200</option
-                ><option value={300}>300</option><option value={400}>400</option
-                ><option value={500}>500</option></select
-            >
-        </div>
-        <div class="overflow-x-auto max-h-[50vh] overflow-y-auto">
+            <select class="select select-bordered select-xs w-24" bind:value={numRows} on:change={() => worker.postMessage({ type: "CALCULATE", numRows })}>
+              <option value={100}>100</option>
+              <option value={200}>200</option>
+              <option value={300}>300</option>
+              <option value={400}>400</option>
+              <option value={500}>500</option>
+            </select>
+          </div>
+          <div class="overflow-x-auto md:max-h-[calc(100vh-10rem)] max-h-[50vh] overflow-y-auto">
             <table class="table table-md table-pin-rows">
-                <thead>
-                    <tr>
-                        <th>Index</th>
-                        <th>Heal</th>
-                        <th>%</th>
-                        {#each chests as _, i}<th>Chest {i + 1}</th>{/each}
-                    </tr>
-                </thead>
-                <tbody>
-                    {#each rows as row}
-                        <tr
-                            class={row.isPastRng
-                                ? "bg-emerald-100  text-emerald-600 dark:bg-emerald-950 dark:text-emerald-600"
-                                : ""}
-                            class:row-selected={!row.isPastRng &&
-                                selectedRows.has(row.index)}
-                            class:cursor-pointer={!row.isPastRng}
-                            on:click={() => {
-                                if (!row.isPastRng) toggleRow(row.index);
-                            }}
-                        >
-                            <td>{row.index}</td>
-                            <td>{row.currentHeal}</td>
-                            <td>{row.randToPercent}</td>
-                            {#each row.chestRewards as reward, i}
-                                <td
-                                    class={chestCellClass(
-                                        i,
-                                        reward,
-                                        row.isPastRng,
-                                    )}
-                                >
-                                    {reward.reward === "Gil"
-                                        ? `${reward.gilAmount} gil`
-                                        : reward.reward}
-                                </td>
-                            {/each}
-                        </tr>
+              <thead>
+                <tr>
+                  <th>Index</th>
+                  <th>Heal</th>
+                  <th>%</th>
+                  {#each chests as _, i}<th>Chest {i + 1}</th>{/each}
+                </tr>
+              </thead>
+              <tbody>
+                {#each rows as row}
+                  <tr
+                    class={row.isPastRng ? "bg-emerald-100 text-emerald-600 dark:bg-emerald-950 dark:text-emerald-600" : ""}
+                    class:row-selected={!row.isPastRng && selectedRows.has(row.index)}
+                    class:cursor-pointer={!row.isPastRng}
+                    on:click={() => { if (!row.isPastRng) toggleRow(row.index); }}
+                  >
+                    <td>{row.index}</td>
+                    <td>{row.currentHeal}</td>
+                    <td>{row.randToPercent}</td>
+                    {#each row.chestRewards as reward, i}
+                      <td class={chestCellClass(i, reward, row.isPastRng)}>
+                        {reward.reward === "Gil" ? `${reward.gilAmount} gil` : reward.reward}
+                      </td>
                     {/each}
-                </tbody>
+                  </tr>
+                {/each}
+              </tbody>
             </table>
-        </div>
-    {/if}
+          </div>
+        {/if}
+      </div>
+
+    </div>
 </div>
