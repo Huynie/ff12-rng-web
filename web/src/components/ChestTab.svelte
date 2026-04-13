@@ -536,19 +536,14 @@
           {#if historyLog.length > 0}
             <div class="overflow-y-auto md:max-h-[calc(100vh-10rem)] max-h-[50vh] flex flex-col gap-2">
               {#each historyLog as entry}
-                <div class="card bg-base-200 p-3 flex flex-col gap-2">
-                  <div class="flex items-center gap-2">
-                    <span class="badge badge-sm {entry.action === 'heal' ? 'badge-primary' : 'badge-secondary'}">{entry.label}</span>
-                    <span class="text-xs text-base-content/50">idx <strong class="text-base-content">{entry.rngIndex}</strong></span>
-                    <span class="text-xs text-base-content/50">heal <strong class="text-base-content">{entry.heal}</strong></span>
-                  </div>
-                  <div class="flex flex-wrap gap-2">
-                    {#each entry.chestRewards as reward, i}
-                      <span class="text-xs {chestCellClass(i, reward, false)} px-2 py-0.5 rounded">
-                        C{i + 1}: {reward.reward === 'Gil' ? `${reward.gilAmount} gil` : reward.reward}{reward.chestWillSpawn ? ' ✓' : ''}
-                      </span>
-                    {/each}
-                  </div>
+                <div class="card bg-base-200 px-3 py-2 flex flex-row flex-wrap items-center gap-x-3 gap-y-1">
+                  <span class="badge badge-sm {entry.action === 'heal' ? 'badge-success' : 'badge-secondary'}">{entry.action === 'heal' ? 'Healed' : entry.label}</span>
+                  <span class="text-xs text-base-content/50">next heal <strong class="text-base-content">{entry.heal}</strong></span>
+                  {#each entry.chestRewards as reward, i}
+                    <span class="text-xs {chestCellClass(i, reward, false)} px-2 py-0.5 rounded">
+                      C{i + 1}: {reward.reward === 'Gil' ? `${reward.gilAmount} gil` : reward.reward}{reward.chestWillSpawn ? ' ✓' : ''}
+                    </span>
+                  {/each}
                 </div>
               {/each}
             </div>
