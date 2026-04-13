@@ -1,5 +1,5 @@
 <script lang="ts">
-    import { onMount, onDestroy } from "svelte";
+    import { onMount, onDestroy, tick } from "svelte";
     import { PlatformType, RewardType, Spells } from "../core/types";
     import CharacterInputRow from "./shared/CharacterInputRow.svelte";
     import HealInput from "./shared/HealInput.svelte";
@@ -58,6 +58,7 @@
     ];
 
     let healValue = "";
+    let healInputRef: { focusAndSelect: () => void } | undefined;
     let numRows = 100;
     let consumeCount = 10;
     let loading = false;
@@ -165,7 +166,7 @@
 
     onDestroy(() => worker?.terminate());
 
-    function handleWorkerMessage(e: MessageEvent<WorkerMessage>) {
+    async function handleWorkerMessage(e: MessageEvent<WorkerMessage>) {
         loading = false;
         const msg = e.data;
         if (msg.type === "ERROR") {
@@ -196,6 +197,9 @@
                 }
                 pendingHistoryEntry = null;
             }
+
+            await tick();
+            healInputRef?.focusAndSelect();
         }
     }
 
@@ -424,6 +428,7 @@
         <!-- Heal controls -->
         <div class="card bg-base-200 p-4">
           <HealInput
+            bind:this={healInputRef}
             bind:healValue
             bind:numRows
             bind:consumeCount

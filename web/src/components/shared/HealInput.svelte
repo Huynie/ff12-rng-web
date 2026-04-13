@@ -20,15 +20,26 @@
     if (e.key === 'Enter') dispatch('begin');
   }
 
-  function onContinueKeydown(e: KeyboardEvent) {
-    if (e.key === 'Enter') dispatch('continue');
-  }
-
-  function onNumRowsChange() {
+function onNumRowsChange() {
     if (canContinue) dispatch('recalculate', numRows);
   }
 
   const rowOptions = [100, 200, 300, 400, 500];
+
+  let healInput: HTMLInputElement | undefined;
+
+  export function focusAndSelect() {
+    healInput?.focus();
+    healInput?.select();
+  }
+
+  function onHealClick() {
+    dispatch('continue');
+  }
+
+  function onHealKeydown(e: KeyboardEvent) {
+    if (e.key === 'Enter') dispatch('continue');
+  }
 </script>
 
 {#if !canContinue}
@@ -81,13 +92,14 @@
             type="number"
             class="input input-bordered input-sm w-14 lg:w-18"
             bind:value={healValue}
-            on:keydown={onContinueKeydown}
+            bind:this={healInput}
+            on:keydown={onHealKeydown}
             disabled={loading}
           />
           <span class="tooltip tooltip-bottom" data-tip="Submit this heal value to refine your RNG position.">
             <button
               class="btn btn-primary btn-sm"
-              on:click={() => dispatch('continue')}
+              on:click={onHealClick}
               disabled={loading || !healValue}
             >
               {#if loading}
